@@ -70,13 +70,13 @@ x(url[count], "iframe@src")
 					function yankees(i) {
 
 						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 200)
+							.wait(until.elementLocated(By.id(sections_arr[i].value)))
 							.then(function() {
 								driver
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
 									.then(function() {
 										driver
-                      .sleep(100)
+                      //.sleep(300)
                       .then(function() {
                         driver
                           .findElement(By.className('Section_Price_Rollover_Large_Text'))
@@ -137,7 +137,7 @@ x(url[count], "iframe@src")
 																								.then(function(){
 
 																									driver
-																										.sleep(100)
+																										//.sleep(300)
 																										.then(function(){
 
 																											driver
@@ -223,7 +223,7 @@ else{
 
 var job = new CronJob({
 
-  cronTime: "*/5 * * * *",
+  cronTime: "*/10 * * * *",
 
   onTick: function(){
 
