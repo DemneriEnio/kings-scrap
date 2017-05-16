@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "chron": "0.0.4",
+    "cron": "^1.2.1",
     "express": "^4.15.2",
     "selenium-webdriver": "^3.4.0",
     "x-ray": "^2.3.2"

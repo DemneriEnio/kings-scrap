@@ -70,13 +70,13 @@ x(url[count], "iframe@src")
 					function yankees(i) {
 
 						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 300)
+							.wait(until.elementLocated(By.id(sections_arr[i].value)), 140)
 							.then(function() {
 								driver
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
 									.then(function() {
 										driver
-                      .sleep(100)
+                      .sleep(70)
                       .then(function() {
                         driver
                           .findElement(By.className('Section_Price_Rollover_Large_Text'))
@@ -137,7 +137,7 @@ x(url[count], "iframe@src")
 																								.then(function(){
 
 																									driver
-																										.sleep(100)
+																										.sleep(80)
 																										.then(function(){
 
 																											driver
@@ -200,7 +200,7 @@ x(url[count], "iframe@src")
 
                               }else{
 
-															setTimeout(function() {yankees(i)}, 100);
+															setTimeout(function() {yankees(i)}, 180);
                             }
 
 														}
