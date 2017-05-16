@@ -76,7 +76,7 @@ x(url[count], "iframe@src")
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
 									.then(function() {
 										driver
-                      .sleep(300)
+                      .sleep(200)
                       .then(function() {
                         driver
                           .findElement(By.className('Section_Price_Rollover_Large_Text'))
@@ -137,7 +137,7 @@ x(url[count], "iframe@src")
 																								.then(function(){
 
 																									driver
-																										.sleep(300)
+																										.sleep(200)
 																										.then(function(){
 
 																											driver
