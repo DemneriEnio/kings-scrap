@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	</head>
+
+	<style>
+		body {
+			padding: 5%;
+		}
+
+		h1, h3, h4, h5 {
+			font-family: HelveticaNeue-Light;
+		}
+
+		img {
+			height: 150px;
+			padding: 20px;
+			background-color: #DDD;
+		}
+
+		th {
+			width: 150px;
+			text-align: center;
+			font-size: 20px;
+		}
+
+		td{
+			width: 150px;
+			border: 1px solid black;
+			text-align: center;
+			padding-top: 2px;
+			padding-bottom: 2px;
+			font-size: 20px;
+		}
+
+	</style>
+
+	<script>
+		$(document).ready(function() {
+
+			var str = '';
+setInterval(function() {
+			$.ajax({
+				url: "/scrap",
+				type: "GET",
+				success: function(json) {
+					console.log(JSON.stringify(json));
+					str = "";
+					for(var i = 0; i < json.a.length; i++){
+						str += "<tr><td>" +
+						json.a[i][0] + "</td><td>" +
+						json.a[i][1] + "</td><td>" +
+						json.a[i][2] + "</td><td>" +
+						json.a[i][3] + "</td></tr>";
+
+					}
+					$("#table").html(str);
+				}
+			});
+		}, 60*1000);
+		});
+	</script>
+
+	<body align='middle'>
+		<h1></h1><br>
+		<a><img></a>
+		<h3>Please wait until we fetch data for this team...</h3>
+		<h4>Last update: <span style="color: crimson">--:--:-- --/--/----</span></h4><br>
+		<div align="middle">
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Section</th>
+						<th>Row</th>
+						<th>Seat</th>
+						<th>Plan Price</th>
+					</tr>
+				</thead>
+			</table> <br>
+			<table>
+				<tr id='table'>
+
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
