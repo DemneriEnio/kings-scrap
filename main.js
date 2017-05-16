@@ -200,7 +200,7 @@ x(url[count], "iframe@src")
 
                               }else{
 
-															setTimeout(function() {yankees(i)}, 200);
+															setTimeout(function() {yankees(i)}, 100);
                             }
 
 														}
@@ -223,7 +223,7 @@ else{
 
 var job = new CronJob({
 
-  cronTime: "*/10 * * * *",
+  cronTime: "*/5 * * * *",
 
   onTick: function(){
 
