@@ -70,7 +70,7 @@ x(url[count], "iframe@src")
 					function yankees(i) {
 
 						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 1000)
+							.wait(until.elementLocated(By.id(sections_arr[i].value)), 300)
 							.then(function() {
 								driver
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
