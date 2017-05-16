@@ -1,5 +1,17 @@
 var express = require('express');
-var webdriver = require('selenium-webdriver'), By = webdriver.By, until = webdriver.until;
+var webdriver = require('selenium-webdriver'), By = webdriver.By, until = webdriver.until,
+  chrome = require('selenium-webdriver/chrome'),
+  options = new chrome.Options().addArguments([
+		  '--disable-gpu',
+	     '--disable-impl-side-painting',
+		  '--disable-gpu-sandbox',
+		'---disable-background-networking',
+		'--disable-accelerated-2d-canvas',
+		'--disable-accelerated-jpeg-decoding',
+		'--no-sandbox',
+		'--test-type=ui',
+		]);
+
 var Xray = require('x-ray');
 var x = new Xray();
 var bodyParser = require('body-parser');
@@ -13,7 +25,7 @@ app.use(express.static('public'));
 
 var allData = [];
 
-var driver = new webdriver.Builder().forBrowser('chrome').build();
+const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
 
 
 var url = ["https://oss.ticketmaster.com/aps/sackings/EN/buy/details/17KFL"];
