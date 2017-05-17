@@ -79,7 +79,7 @@ x(url[count], "iframe@src")
                       .then(function() {
                         driver
                           .wait(until.elementLocated(By.className('Section_Price_Rollover_Large_Text')))
-                          .getText()
+                          .getAttribute('innerHTML')
                           .then(function(result){
 
                             if(result != '0' && result != 'N/A'){
