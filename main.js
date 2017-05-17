@@ -78,7 +78,7 @@ x(url[count], "iframe@src")
                       .sleep(70)
                       .then(function() {
                         driver
-                          .findElement(By.className('Section_Price_Rollover_Large_Text'))
+                          .wait(until.elementLocated(By.className('Section_Price_Rollover_Large_Text')))
                           .getText()
                           .then(function(result){
 
