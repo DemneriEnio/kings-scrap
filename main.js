@@ -27,7 +27,6 @@ var allData = [];
 
 const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
 
-
 var url = ["https://oss.ticketmaster.com/aps/sackings/EN/buy/details/17KFL"];
 
 function teams (count) {
