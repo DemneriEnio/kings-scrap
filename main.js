@@ -78,16 +78,23 @@ x(url[count], "iframe@src")
                       //.sleep(70)
                       .then(function() {
                         driver
-                          .wait(until.elementLocated(By.className('Section_Price_Rollover_Large_Text')))
-                          .getAttribute('innerHTML')
-                          .then(function(result){
-
-                            if(result != '0' && result != 'N/A'){
-                              freeSections.push(sections_arr[i-1].value);
-                              console.log(sections_arr[i-1].value);
-                              console.log(result);
-                            }
+                          .findElement(By.className('Section_Price_Rollover_Large_Text'))
+                          .then(function() {
+        										driver
+                            .findElement(By.className('Section_Price_Rollover_Large_Text'))
+                            .getAttribute('innerHTML')
+                            .then(function(result){
+                              if(result != '0' && result != 'N/A'){
+                                freeSections.push(sections_arr[i-1].value);
+                                console.log(sections_arr[i-1].value);
+                                console.log(result);
+                              }
+                            });
+                          },
+                          function(err){
+                            console.log('error');
                           });
+
                         });
 
 															});
