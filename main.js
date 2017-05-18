@@ -229,7 +229,7 @@ else{
 
 var job = new CronJob({
 
-  cronTime: "*/5 * * * *",
+  cronTime: "*/10 * * * *",
 
   onTick: function(){
 
