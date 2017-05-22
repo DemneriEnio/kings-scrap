@@ -17,6 +17,17 @@ var x = new Xray();
 var bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
 
+var helper = require('sendgrid').mail;
+var from_email = new helper.Email('eniodemneri1@gmail.com');
+var subject = 'Tickets';
+var content = new helper.Content('text/plain', 'Hello');
+var emails = ['mordachiamar@gmail.com'];
+var sg = require('sendgrid')("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");
+
+
+//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
+//sendgrid key
+
 var app = new express();
 
 app.use(bodyParser.json());
@@ -69,7 +80,7 @@ x(url[count], "iframe@src")
 					function yankees(i) {
 
 						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 140)
+							.wait(until.elementLocated(By.id(sections_arr[i].value)), 1000)
 							.then(function() {
 								driver
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
@@ -102,11 +113,10 @@ x(url[count], "iframe@src")
 														if (i < sections_arr.length) {
                               i+=2;
                               if(i >= sections_arr.length){
-                                //return ;
 
 																function rec(n){
 																	driver
-																		.wait(until.elementLocated(By.id("Map")),12000)
+																		.wait(until.elementLocated(By.id("Map")),10000)
 																		.then(function(){
 																			driver
 																		.executeScript("$('#" + freeSections[n] + "').click()")
@@ -222,14 +232,117 @@ x(url[count], "iframe@src")
 });
 }
 else{
-  driver.sleep(10000000);
-  driver.quit();
+
+    function sorting (a, b){
+
+      if(a[3] == b[3]){
+        return 0;
+      }else {
+        return (a[3] < b[3]) ? -1 : 1;
+      }
+
+    }
+
+    allData.sort(sorting);
+
+  var str = "";
+  for(var k = 0; k <  allData.length ; k++){
+    str += "<tr><td>" +
+    allData[k][0] + "</td><td>" +
+    allData[k][1] + "</td><td>" +
+    allData[k][2] + "</td><td>" +
+    allData[k][3] + "</td></tr>";
+
+  }
+
+  var htmlEmail = `
+  <html>
+  	<head>
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  	</head>
+
+  	<style>
+  		body {
+  			padding: 5%;
+  		}
+
+  		h1, h3, h4, h5 {
+  			font-family: HelveticaNeue-Light;
+  		}
+
+  		img {
+  			height: 150px;
+  			padding: 20px;
+  			background-color: #DDD;
+  		}
+
+  		th {
+  			width: 150px;
+  			text-align: center;
+  			font-size: 20px;
+  		}
+
+  		td{
+  			width: 150px;
+  			border: 1px solid black;
+  			text-align: center;
+  			padding-top: 2px;
+  			padding-bottom: 2px;
+  			font-size: 20px;
+  		}
+
+  	</style>
+
+  <body align='middle'>
+		<div align="middle">
+			<table border="1">
+				<thead>
+					<tr>
+						<th>Section</th>
+						<th>Row</th>
+						<th>Seat</th>
+						<th>Plan Price</th>
+					</tr>
+				</thead>
+			</table> <br>
+			<table>
+				<tr id='table'>
+        ` + str + `
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>`;
+
+    content = new helper.Content('text/html', htmlEmail);
+
+                              for (var j=0; j<emails.length; j++){
+                            	   var to_email = new helper.Email(emails[j]);
+                            	   var mail = new helper.Mail(from_email, subject, to_email, content);
+                              }
+
+                              var request = sg.emptyRequest({
+                                method: 'POST',
+                                path: '/v3/mail/send',
+                                body: mail.toJSON(),
+                              });
+
+                              sg.API(request, function(error, response) {
+                                console.log(response.statusCode);
+                                console.log(response.body);
+                                console.log(response.headers);
+                              });
+
 }
+
+
+
 }
 
 var job = new CronJob({
 
-  cronTime: "*/30 * * * *",
+  cronTime: "*/10 * * * *",
 
   onTick: function(){
 
