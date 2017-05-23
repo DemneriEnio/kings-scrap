@@ -21,7 +21,7 @@ var helper = require('sendgrid').mail;
 var from_email = new helper.Email('eniodemneri1@gmail.com');
 var subject = 'Tickets';
 var content = new helper.Content('text/plain', 'Hello');
-var emails = ['mordachiamar@gmail.com'];
+var emails = ['valentino.isufi1@gmail.com', 'eniodemneri1@gmail.com'];
 var sg = require('sendgrid')("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");
 
 
@@ -342,7 +342,7 @@ else{
 
 var job = new CronJob({
 
-  cronTime: "*/10 * * * *",
+  cronTime: "*/30 * * * *",
 
   onTick: function(){
 
