@@ -12,17 +12,11 @@ var webdriver = require('selenium-webdriver'), By = webdriver.By, until = webdri
 		'--test-type=ui',
 		]);
 
+var mongoose = require('mongoose');
 var Xray = require('x-ray');
 var x = new Xray();
 var bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
-
-var helper = require('sendgrid').mail;
-var from_email = new helper.Email('eniodemneri1@gmail.com');
-var subject = 'Tickets';
-var content = new helper.Content('text/plain', '');
-var emails = ['valentino.isufi1@gmail.com'];
-var sg = require('sendgrid')('');
 
 var app = new express();
 
@@ -36,6 +30,67 @@ const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(opt
 
 var url = ["https://oss.ticketmaster.com/aps/sackings/EN/buy/details/17KFL"];
 
+mongoose.connect("mongodb://test:test@ds053156.mlab.com:53156/mongodb-test-valentino", function (err) {
+
+	if (err) {
+		console.log('Unable to connect to the mongoDB server. Error:', err);
+		mongoose.disconnect();
+		return;
+	}
+
+	else {
+		console.log('Connection established');
+	}
+
+});
+
+mongoose.connection.once("open", function(err){
+
+	if(err){
+		console.log(err);
+		mongoose.disconnect();
+		return;
+	}
+
+	else{
+
+		var teamSchema = mongoose.Schema({
+
+			team: {type: Array}
+
+		});
+
+    var code = mongoose.Schema({
+
+      code: {type: String}
+
+    });
+
+		var Team = mongoose.model("Team", teamSchema);
+    var Code = mongoose.model("Code", code);
+
+	}
+
+  var dbCode = '';
+  var sg = require('sendgrid')(String(dbCode));
+
+  Code.find({}, function(err, snippet){
+
+    dbCode = snippet[0].code;
+    sg = require('sendgrid')(String(dbCode));
+
+    console.log(dbCode);
+
+  });
+
+  var helper = require('sendgrid').mail;
+  var from_email = new helper.Email('enio1demneri@gmail.com');
+  var subject = 'Tickets';
+  var content = new helper.Content('text/plain', '');
+  var emails = ['valentino.isufi1@gmail.com'];
+  sg = require('sendgrid')(String(dbCode));
+  //console.log(dbCode);
+
 function teams (count) {
 
   count++;
@@ -46,7 +101,20 @@ var arrSection = [];
 var arrRow = [];
 var arrSeat = [];
 var freeSections = [];
+var database = [];
+var emailData = [];
 allData = [];
+
+Team.find({}, function(err, snippet){
+
+  if(err || !snippet){
+    console.log(err);
+    return;
+  }
+
+  database = snippet[0].team;
+
+});
 
 x(url[count], "iframe@src")
 	(function(err, item) {
@@ -172,6 +240,10 @@ x(url[count], "iframe@src")
 
 																													}
 
+                                                          if(database.indexOf(arrData) == !-1){
+                                                            emailData.push(arrData);
+                                                          }
+
 																													allData.push(arrData);
 
 																													console.log(arrData);
@@ -241,8 +313,28 @@ else{
 
     allData.sort(sorting);
 
+    Team.remove({}, function(err, snippet){
+
+      if(err || !snippet){
+        console.log(err);
+      }
+
+    });
+
+    Team.create({team: allData}, function(err, snippet){
+
+      if(err || !snippet){
+        console.log(err);
+      }
+
+    });
+
   var str = "";
-  for(var k = 0; k <  allData.length ; k++){
+
+  if(emailData = []){
+    str = "no new seats";
+  }else{
+  for(var k = 0; k <  emailData.length ; k++){
     str += "<tr><td>" +
     allData[k][0] + "</td><td>" +
     allData[k][1] + "</td><td>" +
@@ -250,6 +342,7 @@ else{
     allData[k][3] + "</td></tr>";
 
   }
+}
 
   var htmlEmail = `
   <html>
@@ -370,6 +463,8 @@ app.get('/scrap', function(req, res){
       allData.sort(sorting);
 
 res.json({a:allData});
+
+  });
 
 });
 

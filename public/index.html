@@ -4,6 +4,7 @@
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 	</head>
 
 	<style>
@@ -41,13 +42,15 @@
 	<script>
 		$(document).ready(function() {
 
+			var arr = [];
+
 			var str = '';
 setInterval(function() {
 			$.ajax({
 				url: "/scrap",
 				type: "GET",
 				success: function(json) {
-					console.log(JSON.stringify(json));
+					arr = json.a;
 					str = "";
 					for(var i = 0; i < json.a.length; i++){
 						str += "<tr><td>" +
@@ -60,7 +63,25 @@ setInterval(function() {
 					$("#table").html(str);
 				}
 			});
-		}, 60*1000);
+		}, 1000000);
+
+		$("#sort").on("click", function(){
+
+			arr.reverse();
+
+			str = "";
+			for(var i = 0; i < arr.length; i++){
+				str += "<tr><td>" +
+				arr[i][0] + "</td><td>" +
+				arr[i][1] + "</td><td>" +
+				arr[i][2] + "</td><td>" +
+				arr[i][3] + "</td></tr>";
+
+			}
+			$("#table").html(str);
+
+		});
+
 		});
 	</script>
 
@@ -76,7 +97,7 @@ setInterval(function() {
 						<th>Section</th>
 						<th>Row</th>
 						<th>Seat</th>
-						<th>Plan Price</th>
+						<th>Plan Price<button id='sort'><i class='fa fa-arrows-v'></i></button></th>
 					</tr>
 				</thead>
 			</table> <br>
