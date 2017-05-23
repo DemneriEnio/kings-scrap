@@ -360,6 +360,19 @@ job.start();
 
 app.get('/scrap', function(req, res){
 
+
+      function sorting (a, b){
+
+        if(a[3] == b[3]){
+          return 0;
+        }else {
+          return (a[3] < b[3]) ? -1 : 1;
+        }
+
+      }
+
+      allData.sort(sorting);
+
 res.json({a:allData});
 
 });
