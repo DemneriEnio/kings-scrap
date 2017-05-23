@@ -20,13 +20,9 @@ var CronJob = require('cron').CronJob;
 var helper = require('sendgrid').mail;
 var from_email = new helper.Email('eniodemneri1@gmail.com');
 var subject = 'Tickets';
-var content = new helper.Content('text/plain', 'Hello');
+var content = new helper.Content('text/plain', '');
 var emails = ['valentino.isufi1@gmail.com'];
-var sg = require('sendgrid')("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");
-
-
-//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
-//sendgrid key
+var sg = require('sendgrid')('');
 
 var app = new express();
 
