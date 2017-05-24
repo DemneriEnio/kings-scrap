@@ -87,7 +87,7 @@ mongoose.connection.once("open", function(err){
   var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
-  var emails = ['valentino.isufi1@gmail.com'];
+  var emails = ['mordachiamar@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
@@ -301,18 +301,6 @@ x(url[count], "iframe@src")
 }
 else{
 
-    function sorting (a, b){
-
-      if(a[3] == b[3]){
-        return 0;
-      }else {
-        return (a[3] < b[3]) ? -1 : 1;
-      }
-
-    }
-
-    allData.sort(sorting);
-
     Team.remove({}, function(err, snippet){
 
       if(err || !snippet){
@@ -406,12 +394,12 @@ else{
 
     content = new helper.Content('text/html', htmlEmail);
 
-                              for (var j=0; j<emails.length; j++){
-                            	   var to_email = new helper.Email(emails[j]);
-                            	   var mail = new helper.Mail(from_email, subject, to_email, content);
-                              }
+                            for (var j=0; j<emails.length; j++){
+                          	   var to_email = new helper.Email(emails[j]);
+                          	   var mail = new helper.Mail(from_email, subject, to_email, content);
+                            }
 
-                              var request = sg.emptyRequest({
+                            var request = sg.emptyRequest({
                                 method: 'POST',
                                 path: '/v3/mail/send',
                                 body: mail.toJSON(),
@@ -424,8 +412,6 @@ else{
                               });
 
 }
-
-
 
 }
 
@@ -449,20 +435,16 @@ job.start();
 
 app.get('/scrap', function(req, res){
 
+  Team.find({}, function(err, snippet){
 
-      function sorting (a, b){
+    if(err || !snippet){
+      console.log(err);
+      return;
+    }
 
-        if(a[3] == b[3]){
-          return 0;
-        }else {
-          return (a[3] < b[3]) ? -1 : 1;
-        }
+    res.json({a:snippet[0].team});
 
-      }
-
-      allData.sort(sorting);
-
-res.json({a:allData});
+  });
 
   });
 

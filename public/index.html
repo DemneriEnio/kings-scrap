@@ -43,6 +43,7 @@
 		$(document).ready(function() {
 
 			var arr = [];
+			var sort = false;
 
 			var str = '';
 setInterval(function() {
@@ -50,6 +51,23 @@ setInterval(function() {
 				url: "/scrap",
 				type: "GET",
 				success: function(json) {
+
+					function sorting (a, b){
+
+						if(a[3] == b[3]){
+							return 0;
+						}else {
+							return (a[3] < b[3]) ? -1 : 1;
+						}
+
+					}
+
+					json.a.sort(sorting);
+
+					if(sort){
+						json.a.reverse();
+					}
+
 					arr = json.a;
 					str = "";
 					for(var i = 0; i < json.a.length; i++){
@@ -63,9 +81,15 @@ setInterval(function() {
 					$("#table").html(str);
 				}
 			});
-		}, 90*1000);
+		}, 5000);
 
 		$("#sort").on("click", function(){
+
+			if(sort){
+				sort = false;
+			} else{
+				sort = true;
+			}
 
 			arr.reverse();
 
