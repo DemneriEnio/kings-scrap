@@ -444,7 +444,11 @@ app.get('/scrap', function(req, res){
       return;
     }
 
-    res.json({a:snippet[0].team, b:snippet[0].time});
+    var then = snippet[0].time;
+    var now = moment().format('LLL');
+    var minutes = moment.utc(moment(now).diff(moment(then))).format("HH:mm:ss").split(":");
+
+    res.json({a:snippet[0].team, b: Number(minutes[0]) + " hours and " +  Number(minutes[1])+ " minutes ago"});
 
   });
 
