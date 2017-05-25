@@ -17,6 +17,8 @@ var Xray = require('x-ray');
 var x = new Xray();
 var bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
+var moment = require('moment');
+moment().format('MMMM Do YYYY, h:mm:ss a');
 
 var app = new express();
 
@@ -56,7 +58,8 @@ mongoose.connection.once("open", function(err){
 
 		var teamSchema = mongoose.Schema({
 
-			team: {type: Array}
+			team: {type: Array},
+      time: {type: String}
 
 		});
 
@@ -284,7 +287,7 @@ x(url[count], "iframe@src")
 
                               }else{
 
-															setTimeout(function() {yankees(i)}, 180);
+															setTimeout(function() {yankees(i)}, 250);
                             }
 
 														}
@@ -310,6 +313,14 @@ else{
     });
 
     Team.create({team: allData}, function(err, snippet){
+
+      if(err || !snippet){
+        console.log(err);
+      }
+
+    });
+
+    Team.create({time: moment().calendar()}, function(err, snippet){
 
       if(err || !snippet){
         console.log(err);
@@ -442,7 +453,7 @@ app.get('/scrap', function(req, res){
       return;
     }
 
-    res.json({a:snippet[0].team});
+    res.json({a:snippet[0].team, b:snippet[0].time});
 
   });
 

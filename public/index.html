@@ -54,10 +54,15 @@ setInterval(function() {
 
 					function sorting (a, b){
 
-						if(a[3] == b[3]){
+						var numberPattern = /\d+/g;
+
+					var c = Number(a[3].match(numberPattern).join(""));
+					var d = Number(b[3].match(numberPattern).join(""));
+
+						if(c == d){
 							return 0;
 						}else {
-							return (a[3] < b[3]) ? -1 : 1;
+							return (c < d) ? -1 : 1;
 						}
 
 					}
@@ -79,6 +84,9 @@ setInterval(function() {
 
 					}
 					$("#table").html(str);
+
+					$("#time").html(json.b);
+
 				}
 			});
 		}, 5000);
@@ -113,7 +121,7 @@ setInterval(function() {
 		<h1></h1><br>
 		<h1>Sacramento Kings</h1><br>
 		<h3>Please wait until we fetch data for this team...</h3>
-		<h4>Last update: <span style="color: crimson">--:--:-- --/--/----</span></h4><br>
+		<h4>Last update: <span style="color: crimson" id="time">--:--:-- --/--/----</span></h4><br>
 		<div align="middle">
 			<table border="1">
 				<thead>
