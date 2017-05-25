@@ -18,7 +18,6 @@ var x = new Xray();
 var bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
 var moment = require('moment');
-moment().format('MMMM Do YYYY, h:mm:ss a');
 
 var app = new express();
 
@@ -312,15 +311,7 @@ else{
 
     });
 
-    Team.create({team: allData}, function(err, snippet){
-
-      if(err || !snippet){
-        console.log(err);
-      }
-
-    });
-
-    Team.create({time: moment().calendar()}, function(err, snippet){
+    Team.create({team: allData, time: moment().format('LLL')}, function(err, snippet){
 
       if(err || !snippet){
         console.log(err);
