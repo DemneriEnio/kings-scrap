@@ -309,7 +309,7 @@ else{
 
     });
 
-    Team.create({team: allData, time: moment().format('LLL')}, function(err, snippet){
+    Team.create({team: allData, time: moment().format()}, function(err, snippet){
 
       if(err || !snippet){
         console.log(err);
@@ -372,6 +372,7 @@ else{
   	</style>
 
   <body align='middle'>
+    <h1>Sacramento Kings</h1>
 		<div align="middle">
 			<table border="1">
 				<thead>
@@ -443,11 +444,9 @@ app.get('/scrap', function(req, res){
     }
 
     var then = snippet[0].time;
-    var now = moment().format('LLL');
-    //var duration = moment.duration(now.diff(then));
+    var now = moment().format();
 
     var minutes = moment.utc(moment(now).diff(moment(then))).format("HH:mm:ss").split(":");
-    console.log(minutes);
 
     res.json({a:snippet[0].team, b: Number(minutes[0]) + " hours and " +  Number(minutes[1])+ " minutes ago"});
 
