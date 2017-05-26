@@ -81,8 +81,6 @@ mongoose.connection.once("open", function(err){
     dbCode = snippet[0].code;
     sg = require('sendgrid')(String(dbCode));
 
-    console.log(dbCode);
-
   });
 
   var helper = require('sendgrid').mail;
@@ -182,7 +180,7 @@ x(url[count], "iframe@src")
 
 																function rec(n){
 																	driver
-																		.wait(until.elementLocated(By.id("Map")),10000)
+																		.wait(until.elementLocated(By.id("Map")),30000)
 																		.then(function(){
 																			driver
 																		.executeScript("$('#" + freeSections[n] + "').click()")
@@ -446,7 +444,10 @@ app.get('/scrap', function(req, res){
 
     var then = snippet[0].time;
     var now = moment().format('LLL');
+    //var duration = moment.duration(now.diff(then));
+
     var minutes = moment.utc(moment(now).diff(moment(then))).format("HH:mm:ss").split(":");
+    console.log(minutes);
 
     res.json({a:snippet[0].team, b: Number(minutes[0]) + " hours and " +  Number(minutes[1])+ " minutes ago"});
 
