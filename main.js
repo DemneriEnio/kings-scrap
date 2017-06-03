@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 
 var allData = [];
+var emailData = [];
 
 const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
 
@@ -88,7 +89,7 @@ mongoose.connection.once("open", function(err){
   var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
-  var emails = ['mordachiamar@gmail.com'];
+  var emails = ['valentino.isufi1@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
@@ -103,7 +104,9 @@ var arrRow = [];
 var arrSeat = [];
 var freeSections = [];
 var database = [];
-var emailData = [];
+var idArr = [];
+var newId = "";
+emailData = [];
 allData = [];
 
 Team.find({}, function(err, snippet){
@@ -114,6 +117,12 @@ Team.find({}, function(err, snippet){
   }
 
   database = snippet[0].team;
+
+  for (var i = 0; i < database.length; i++){
+
+    idArr.push(database[i][4]);
+
+  }
 
 });
 
@@ -145,7 +154,7 @@ x(url[count], "iframe@src")
 					function yankees(i) {
 
 						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 1000)
+							.wait(until.elementLocated(By.id(sections_arr[i].value)), 5000)
 							.then(function() {
 								driver
 									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
@@ -181,7 +190,7 @@ x(url[count], "iframe@src")
 
 																function rec(n){
 																	driver
-																		.wait(until.elementLocated(By.id("Map")),30000)
+																		.wait(until.elementLocated(By.id("Map")),60000)
 																		.then(function(){
 																			driver
 																		.executeScript("$('#" + freeSections[n] + "').click()")
@@ -241,13 +250,18 @@ x(url[count], "iframe@src")
 
 																													}
 
-                                                          if(database.indexOf(arrData) == !-1){
-                                                            emailData.push(arrData);
-                                                          }
+                                                          newId = String("s" + arrData[0] + "r" + arrData[1] + arrData[2]);
+
+                                                          arrData.push(newId);
 
 																													allData.push(arrData);
 
 																													console.log(arrData);
+
+                                                          if(idArr.indexOf(arrData[4]) === -1){
+                                                            emailData.push(arrData);
+                                                            console.log("new seat");
+                                                          }
 
 																												});
 
@@ -305,22 +319,22 @@ else{
   Team.findOneAndUpdate({id:"scrap"}, {team: allData, time: moment().format()}, function(err, snippet){
 
     if(err || !snippet){
-      console.log(err);
+      console.err(err);
     }
 
   });
 
   var str = "";
 
-  if(emailData = []){
+  if(emailData == []){
     str = "no new seats";
-  }else{
-  for(var k = 0; k <  emailData.length ; k++){
+  } else{
+  for(var k = 0; k < emailData.length ; k++){
     str += "<tr><td>" +
-    allData[k][0] + "</td><td>" +
-    allData[k][1] + "</td><td>" +
-    allData[k][2] + "</td><td>" +
-    allData[k][3] + "</td></tr>";
+    emailData[k][0] + "</td><td>" +
+    emailData[k][1] + "</td><td>" +
+    emailData[k][2] + "</td><td>" +
+    emailData[k][3] + "</td></tr>";
 
   }
 }
@@ -414,9 +428,15 @@ var job = new CronJob({
   cronTime: "*/30 * * * *",
 
   onTick: function(){
-
-    teams(-1);
-
+      try {
+        teams(-1);
+      }catch (e){
+        console.log(e);
+        teams(-1);
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: false}));
+        app.use(express.static('public'));
+    }
   },
 
   runOnInit: true,
