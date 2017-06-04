@@ -89,7 +89,7 @@ mongoose.connection.once("open", function(err){
   var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
-  var emails = ['valentino.isufi1@gmail.com'];
+  var emails = ['mordachiamar@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
