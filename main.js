@@ -89,7 +89,7 @@ mongoose.connection.once("open", function(err){
   var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
-  var emails = ['mordachiamar@gmail.com'];
+  var emails = ['mordachiamar@gmail.com', 'matthewingber@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
@@ -430,7 +430,6 @@ var job = new CronJob({
   onTick: function(){
       try {
         teams(-1);
-      }catch (e){
         console.log(e);
         teams(-1);
         app.use(bodyParser.json());
