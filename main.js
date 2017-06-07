@@ -86,10 +86,10 @@ mongoose.connection.once("open", function(err){
   });
 
   var helper = require('sendgrid').mail;
-  var from_email = new helper.Email('enio1demneri@gmail.com');
+  var from_email = new helper.Email('mordachiamar@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
-  var emails = ['mordachiamar@gmail.com', 'matthewingber@gmail.com'];
+  //var emails = ['eniodemneri1@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
@@ -402,10 +402,11 @@ else{
 
     content = new helper.Content('text/html', htmlEmail);
 
-                            for (var j=0; j<emails.length; j++){
-                          	   var to_email = new helper.Email(emails[j]);
+                            //for (var j=0; j<emails.length; j++){
+                          	   var to_email = new helper.Email('mordachiamar@gmail.com');
+
                           	   var mail = new helper.Mail(from_email, subject, to_email, content);
-                            }
+                          //  }
 
                             var request = sg.emptyRequest({
                                 method: 'POST',
@@ -419,6 +420,25 @@ else{
                                 console.log(response.headers);
                               });
 
+                              content = new helper.Content('text/html', htmlEmail);
+
+                                                      //for (var j=0; j<emails.length; j++){
+                                                         var toEmail = new helper.Email('matthewingber@gmail.com');
+
+                                                         var mail = new helper.Mail(from_email, subject, toEmail, content);
+                                                    //  }
+
+                                                      var request = sg.emptyRequest({
+                                                          method: 'POST',
+                                                          path: '/v3/mail/send',
+                                                          body: mail.toJSON(),
+                                                        });
+
+                                                        sg.API(request, function(error, response) {
+                                                          console.log(response.statusCode);
+                                                          console.log(response.body);
+                                                          console.log(response.headers);
+                                                        });
 }
 
 }
@@ -428,14 +448,16 @@ var job = new CronJob({
   cronTime: "*/30 * * * *",
 
   onTick: function(){
-      try {
-        teams(-1);
-        console.log(e);
-        teams(-1);
-        app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({extended: false}));
-        app.use(express.static('public'));
+    try {
+      teams(-1);
+  } catch (e){
+      console.log(e);
+      teams(-1);
+      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded({extended: false}));
+      app.use(express.static('public'));
     }
+
   },
 
   runOnInit: true,
