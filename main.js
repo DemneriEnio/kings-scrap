@@ -445,7 +445,7 @@ else{
 
 var job = new CronJob({
 
-  cronTime: "*/30 * * * *",
+  cronTime: "*/60 * * * *",
 
   onTick: function(){
     try {
