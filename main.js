@@ -1,16 +1,18 @@
 var express = require('express');
-var webdriver = require('selenium-webdriver'), By = webdriver.By, until = webdriver.until,
+var webdriver = require('selenium-webdriver'),
+  By = webdriver.By,
+  until = webdriver.until,
   chrome = require('selenium-webdriver/chrome'),
   options = new chrome.Options().addArguments([
-		  '--disable-gpu',
-	     '--disable-impl-side-painting',
-		  '--disable-gpu-sandbox',
-		'---disable-background-networking',
-		'--disable-accelerated-2d-canvas',
-		'--disable-accelerated-jpeg-decoding',
-		'--no-sandbox',
-		'--test-type=ui',
-		]);
+    '--disable-gpu',
+    '--disable-impl-side-painting',
+    '--disable-gpu-sandbox',
+    '---disable-background-networking',
+    '--disable-accelerated-2d-canvas',
+    '--disable-accelerated-jpeg-decoding',
+    '--no-sandbox',
+    '--test-type=ui',
+  ]);
 
 var mongoose = require('mongoose');
 var Xray = require('x-ray');
@@ -22,7 +24,9 @@ var moment = require('moment');
 var app = new express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(express.static('public'));
 
 var allData = [];
@@ -32,53 +36,55 @@ const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(opt
 
 var url = ["https://oss.ticketmaster.com/aps/sackings/EN/buy/details/17KFL"];
 
-mongoose.connect("mongodb://test:test@ds053156.mlab.com:53156/mongodb-test-valentino", function (err) {
+mongoose.connect("mongodb://test:test@ds053156.mlab.com:53156/mongodb-test-valentino", function(err) {
 
-	if (err) {
-		console.log('Unable to connect to the mongoDB server. Error:', err);
-		mongoose.disconnect();
-		return;
-	}
-
-	else {
-		console.log('Connection established');
-	}
-
+  if (err) {
+    console.log('Unable to connect to the mongoDB server. Error:', err);
+    mongoose.disconnect();
+    return;
+  } else {
+    console.log('Connection established');
+  }
 });
 
-mongoose.connection.once("open", function(err){
+mongoose.connection.once("open", function(err) {
 
-	if(err){
-		console.log(err);
-		mongoose.disconnect();
-		return;
-	}
+  if (err) {
+    console.log(err);
+    mongoose.disconnect();
+    return;
+  } else {
 
-	else{
+    var teamSchema = mongoose.Schema({
 
-		var teamSchema = mongoose.Schema({
-
-			team: {type: Array},
-      time: {type: String},
-      id: {type:String, unique: true}
-
-		});
+      team: {
+        type: Array
+      },
+      time: {
+        type: String
+      },
+      id: {
+        type: String,
+        unique: true
+      }
+    });
 
     var code = mongoose.Schema({
 
-      code: {type: String}
-
+      code: {
+        type: String
+      }
     });
 
-		var Team = mongoose.model("Team", teamSchema);
+    var Team = mongoose.model("Team", teamSchema);
     var Code = mongoose.model("Code", code);
 
-	}
+  }
 
   var dbCode = '';
   var sg = require('sendgrid')(String(dbCode));
 
-  Code.find({}, function(err, snippet){
+  Code.find({}, function(err, snippet) {
 
     dbCode = snippet[0].code;
     sg = require('sendgrid')(String(dbCode));
@@ -86,260 +92,255 @@ mongoose.connection.once("open", function(err){
   });
 
   var helper = require('sendgrid').mail;
-  var from_email = new helper.Email('mordachiamar@gmail.com');
+  var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
   //var emails = ['eniodemneri1@gmail.com'];
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
-function teams (count) {
+  function teams(count) {
 
-  count++;
+    count++;
 
-  if(count!=url.length){
+    if (count != url.length) {
 
-var arrSection = [];
-var arrRow = [];
-var arrSeat = [];
-var freeSections = [];
-var database = [];
-var idArr = [];
-var newId = "";
-emailData = [];
-allData = [];
+      var arrSection = [];
+      var arrRow = [];
+      var arrSeat = [];
+      var freeSections = [];
+      var database = [];
+      var idArr = [];
+      var newId = "";
+      emailData = [];
+      allData = [];
 
-Team.find({}, function(err, snippet){
+      Team.find({}, function(err, snippet) {
 
-  if(err || !snippet){
-    console.log(err);
-    return;
-  }
+        if (err || !snippet) {
+          console.log(err);
+          return;
+        }
 
-  database = snippet[0].team;
+        database = snippet[0].team;
 
-  for (var i = 0; i < database.length; i++){
+        for (var i = 0; i < database.length; i++) {
 
-    idArr.push(database[i][4]);
+          idArr.push(database[i][4]);
 
-  }
+        }
+      });
 
-});
+      x(url[count], "iframe@src")
+        (function(err, item) {
+          if (err) console.log(err);
+          else {
 
-x(url[count], "iframe@src")
-	(function(err, item) {
-		if (err) console.log(err);
-		else {
+            driver.get(item);
+            driver
+              .wait(until.elementLocated(By.id('Complete_Section_110')))
+              .findElement(By.xpath("parent::*"))
+              .getAttribute("innerHTML")
+              .then(function(data) {
+                var arr = data.split('\"');
+                var sections_arr = [];
 
-			driver.get(item);
-			driver
-				.wait(until.elementLocated(By.id('Complete_Section_110')))
-				.findElement(By.xpath("parent::*"))
-				.getAttribute("innerHTML")
-				.then(function(data) {
-					var arr = data.split('\"');
-					var sections_arr = [];
+                for (var i = 0; i < arr.length; i += 1) {
+                  if (arr[i].split("")[0] === "C") {
 
-					for (var i = 0; i < arr.length; i += 1) {
-						if (arr[i].split("")[0] === "C") {
+                    //if(arr[i].split("")[17]!='0'){
+                    sections_arr.push({
+                      value: arr[i]
+                    });
+                    //}
+                  }
+                }
 
-							//if(arr[i].split("")[17]!='0'){
-								sections_arr.push({value: arr[i]});
-							//}
-						}
-					}
+                //sections_arr.reverse();
 
-					//sections_arr.reverse();
+                function yankees(i) {
 
-					function yankees(i) {
-
-						driver
-							.wait(until.elementLocated(By.id(sections_arr[i].value)), 5000)
-							.then(function() {
-								driver
-									.executeScript("$('#" + sections_arr[i].value + "').mouseover()")
-									.then(function() {
-										driver
-                      //.sleep(70)
-                      .then(function() {
-                        driver
-                          .findElement(By.className('Section_Price_Rollover_Large_Text'))
-                          .then(function() {
-        										driver
-                            .findElement(By.className('Section_Price_Rollover_Large_Text'))
-                            .getAttribute('innerHTML')
-                            .then(function(result){
-                              if(result != '0' && result != 'N/A'){
-                                freeSections.push(sections_arr[i-1].value);
-                                console.log(sections_arr[i-1].value);
-                                console.log(result);
-                              }
+                  driver
+                    .wait(until.elementLocated(By.id(sections_arr[i].value)), 5000)
+                    .then(function() {
+                      driver
+                        .executeScript("$('#" + sections_arr[i].value + "').mouseover()")
+                        .then(function() {
+                          driver
+                            //.sleep(70)
+                            .then(function() {
+                              driver
+                                .findElement(By.className('Section_Price_Rollover_Large_Text'))
+                                .then(function() {
+                                    driver
+                                      .findElement(By.className('Section_Price_Rollover_Large_Text'))
+                                      .getAttribute('innerHTML')
+                                      .then(function(result) {
+                                        if (result != '0' && result != 'N/A') {
+                                          freeSections.push(sections_arr[i - 1].value);
+                                          console.log(sections_arr[i - 1].value);
+                                          console.log(result);
+                                        }
+                                      });
+                                  },
+                                  function(err) {
+                                    console.log('error');
+                                  });
                             });
-                          },
-                          function(err){
-                            console.log('error');
-                          });
-
                         });
 
-															});
+                      if (i < sections_arr.length) {
+                        i += 2;
+                        if (i >= sections_arr.length) {
 
-														if (i < sections_arr.length) {
-                              i+=2;
-                              if(i >= sections_arr.length){
+                          function rec(n) {
+                            driver
+                              .wait(until.elementLocated(By.id("Map")), 60000)
+                              .then(function() {
+                                driver
+                                  .executeScript("$('#" + freeSections[n] + "').click()")
+                                  .then(function() {
+                                    driver
+                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')))
+                                      .findElement(By.xpath('div'))
+                                      .getAttribute('innerHTML')
+                                      .then(function(data) {
 
-																function rec(n){
-																	driver
-																		.wait(until.elementLocated(By.id("Map")),60000)
-																		.then(function(){
-																			driver
-																		.executeScript("$('#" + freeSections[n] + "').click()")
-																		.then(function(){
-																			driver
-																				.wait(until.elementLocated(By.id('seatsBasicMapContainer')))
-																				.findElement(By.xpath('div'))
-																				.getAttribute('innerHTML')
-																				.then(function(data){
+                                        var arr = data.split('<div class="');
+                                        arr.shift();
+                                        arr.unshift('');
+                                        data = arr.join('!');
 
-																				var arr = data.split('<div class="');
-																				arr.shift();
-																				arr.unshift('');
-																				data = arr.join('!');
+                                        arr = data.split('" id="');
+                                        data = arr.join('!');
 
-																				arr = data.split('" id="');
-																				data = arr.join('!');
+                                        arr = data.split('" style="');
+                                        data = arr.join('!');
+                                        arr = data.split('!');
 
-																				arr = data.split('" style="');
-																				data = arr.join('!');
-																				arr = data.split('!');
+                                        var arrId = [];
 
-																				var arrId = [];
+                                        for (var j = 0; j < arr.length; j++) {
+                                          if (j % 3 === 1) {
+                                            if (arr[j] == 'seatUnavailable') {
+                                              arr[j] = '';
+                                            } else {
+                                              arrId.push(arr[j + 1]);
 
-																				for(var j = 0; j < arr.length; j++){
-																					if(j % 3 === 1){
-																						if(arr[j] == 'seatUnavailable'){
-																							arr[j] = '';
-																						}else{
-																							arrId.push(arr[j + 1]);
+                                              driver
+                                                .executeScript("$('#" + arr[j + 1] + "').mouseover()")
+                                                .then(function() {
 
-																							driver
-																								.executeScript("$('#" + arr[j+1] + "').mouseover()")
-																								.then(function(){
+                                                  driver
+                                                    //.sleep(80)
+                                                    .then(function() {
 
-																									driver
-																										//.sleep(80)
-																										.then(function(){
+                                                      driver
+                                                        .findElement(By.className('seat_rollover_holder'))
+                                                        .getAttribute("innerHTML")
+                                                        .then(function(info) {
 
-																											driver
-																												.findElement(By.className('seat_rollover_holder'))
-																												.getAttribute("innerHTML")
-																												.then(function(info){
+                                                          var str = info.split("<span>");
+                                                          info = str.join("!");
+                                                          str = info.split("</span>");
+                                                          info = str.join("!");
+                                                          str = info.split("!");
+                                                          var arrData = [];
 
-																													var str = info.split("<span>");
-																													info = str.join("!");
-																													str = info.split("</span>");
-																													info = str.join("!");
-																													str = info.split("!");
-																													var arrData = [];
+                                                          for (var m = 0; m < str.length; m++) {
 
-																													for(var m = 0; m < str.length; m++){
-
-																														if(m == 1 || m == 3 || m == 5 || m == 7){
-																															arrData.push(str[m]);
-																														}
-
-																													}
+                                                            if (m == 1 || m == 3 || m == 5 || m == 7) {
+                                                              arrData.push(str[m]);
+                                                            }
+                                                          }
 
                                                           newId = String("s" + arrData[0] + "r" + arrData[1] + arrData[2]);
 
                                                           arrData.push(newId);
+                                                          allData.push(arrData);
 
-																													allData.push(arrData);
+                                                          console.log(arrData);
 
-																													console.log(arrData);
-
-                                                          if(idArr.indexOf(arrData[4]) === -1){
+                                                          if (idArr.indexOf(arrData[4]) === -1) {
                                                             emailData.push(arrData);
                                                             console.log("new seat");
                                                           }
+                                                        });
+                                                    });
+                                                });
+                                            }
+                                          }
+                                        }
+                                        console.log(arrId);
 
-																												});
+                                        driver
+                                          .executeScript("$('#Back_Btn').click()")
+                                          .then(function() {
 
-																										});
+                                            n++;
+                                            if (n != freeSections.length) {
+                                              setTimeout(function() {
+                                                rec(n)
+                                              }, 4000);
+                                            } else {
+                                              //return;
+                                              setTimeout(function() {
+                                                teams(count)
+                                              }, 2000);
+                                            }
+                                          });
+                                      });
+                                  });
+                              });
+                          }
+                          rec(0);
 
-																								});
+                        } else {
+                          setTimeout(function() {
+                            yankees(i)
+                          }, 250);
+                        }
+                      }
+                    });
+                }
 
-																									}
-																						}
-							  													}
-																							console.log(arrId);
+                yankees(0);
 
-																							driver
-																								.executeScript("$('#Back_Btn').click()")
-																								.then(function(){
+              });
 
-																															n++;
-																															if(n!=freeSections.length){
-																																setTimeout(function() {rec(n)}, 4000);
-																															}
-																															else{
+          }
+        });
+    } else {
 
-																																//return;
-                                                                setTimeout(function() {teams(count)}, 2000);
-																															}
+      Team.findOneAndUpdate({
+        id: "scrap"
+      }, {
+        team: allData,
+        time: moment().format()
+      }, function(err, snippet) {
 
+        if (err || !snippet) {
+          console.err(err);
+        }
 
-																												});
-																		});
-																		});
-																	});
-																}
-																rec(0);
+      });
 
+      var str = "";
 
-                              }else{
+      if (emailData == []) {
+        str = "no new seats";
+      } else {
+        for (var k = 0; k < emailData.length; k++) {
+          str += "<tr><td>" +
+            emailData[k][0] + "</td><td>" +
+            emailData[k][1] + "</td><td>" +
+            emailData[k][2] + "</td><td>" +
+            emailData[k][3] + "</td></tr>";
 
-															setTimeout(function() {yankees(i)}, 250);
-                            }
+        }
+      }
 
-														}
-													});
-
-					}
-
-					yankees(0);
-
-				});
-
-	}
-});
-}
-else{
-
-  Team.findOneAndUpdate({id:"scrap"}, {team: allData, time: moment().format()}, function(err, snippet){
-
-    if(err || !snippet){
-      console.err(err);
-    }
-
-  });
-
-  var str = "";
-
-  if(emailData == []){
-    str = "no new seats";
-  } else{
-  for(var k = 0; k < emailData.length ; k++){
-    str += "<tr><td>" +
-    emailData[k][0] + "</td><td>" +
-    emailData[k][1] + "</td><td>" +
-    emailData[k][2] + "</td><td>" +
-    emailData[k][3] + "</td></tr>";
-
-  }
-}
-
-  var htmlEmail = `
+      var htmlEmail = `
   <html>
   	<head>
   		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -400,94 +401,98 @@ else{
 	</body>
 </html>`;
 
-    content = new helper.Content('text/html', htmlEmail);
+      content = new helper.Content('text/html', htmlEmail);
 
-                            //for (var j=0; j<emails.length; j++){
-                          	   var to_email = new helper.Email('mordachiamar@gmail.com');
+      //for (var j=0; j<emails.length; j++){
+      var to_email = new helper.Email('eniodemneri1@gmail.com');
+      var mail = new helper.Mail(from_email, subject, to_email, content);
+      //  }
 
-                          	   var mail = new helper.Mail(from_email, subject, to_email, content);
-                          //  }
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
 
-                            var request = sg.emptyRequest({
-                                method: 'POST',
-                                path: '/v3/mail/send',
-                                body: mail.toJSON(),
-                              });
+      sg.API(request, function(error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+      });
 
-                              sg.API(request, function(error, response) {
-                                console.log(response.statusCode);
-                                console.log(response.body);
-                                console.log(response.headers);
-                              });
+      content = new helper.Content('text/html', htmlEmail);
 
-                              content = new helper.Content('text/html', htmlEmail);
+      //for (var j=0; j<emails.length; j++){
+      var toEmail = new helper.Email('valentino.isufi1@gmail.com');
+      var mail = new helper.Mail(from_email, subject, toEmail, content);
+      //  }
 
-                                                      //for (var j=0; j<emails.length; j++){
-                                                         var toEmail = new helper.Email('matthewingber@gmail.com');
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
 
-                                                         var mail = new helper.Mail(from_email, subject, toEmail, content);
-                                                    //  }
-
-                                                      var request = sg.emptyRequest({
-                                                          method: 'POST',
-                                                          path: '/v3/mail/send',
-                                                          body: mail.toJSON(),
-                                                        });
-
-                                                        sg.API(request, function(error, response) {
-                                                          console.log(response.statusCode);
-                                                          console.log(response.body);
-                                                          console.log(response.headers);
-                                                        });
-}
-
-}
-
-var job = new CronJob({
-
-  cronTime: "*/60 * * * *",
-
-  onTick: function(){
-    try {
-      teams(-1);
-  } catch (e){
-      console.log(e);
-      teams(-1);
-      app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded({extended: false}));
-      app.use(express.static('public'));
+      sg.API(request, function(error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+      });
     }
 
-  },
+  }
 
-  runOnInit: true,
+  var job = new CronJob({
 
-  start: true
+    cronTime: "*/10 * * * *",
 
-});
+    onTick: function() {
 
-job.start();
+      driver.executeScript("location.reload()")
+        .then(function(){
 
-app.get('/scrap', function(req, res){
+          try {
+            teams(-1);
+          } catch (e) {
+            console.log(e);
+            teams(-1);
+            app.use(bodyParser.json());
+            app.use(bodyParser.urlencoded({
+              extended: false
+            }));
+            app.use(express.static('public'));
+          }
 
-  Team.find({}, function(err, snippet){
+        });
+    },
 
-    if(err || !snippet){
-      console.log(err);
-      return;
-    }
-
-    var then = snippet[0].time;
-    var now = moment().format();
-
-    var minutes = moment.utc(moment(now).diff(moment(then))).format("HH:mm:ss").split(":");
-
-    res.json({a:snippet[0].team, b: Number(minutes[0]) + " hours and " +  Number(minutes[1])+ " minutes ago"});
+    runOnInit: true,
+    start: true
 
   });
 
-  });
+  job.start();
 
+  app.get('/scrap', function(req, res) {
+
+    Team.find({}, function(err, snippet) {
+
+      if (err || !snippet) {
+        console.log(err);
+        return;
+      }
+
+      var then = snippet[0].time;
+      var now = moment().format();
+
+      var minutes = moment.utc(moment(now).diff(moment(then))).format("HH:mm:ss").split(":");
+
+      res.json({
+        a: snippet[0].team,
+        b: Number(minutes[0]) + " hours and " + Number(minutes[1]) + " minutes ago"
+      });
+    });
+  });
 });
 
 app.listen(8800);
