@@ -256,14 +256,19 @@ mongoose.connection.once("open", function(err) {
 
                                                           newId = String("s" + arrData[0] + "r" + arrData[1] + arrData[2]);
 
+                                                          if(allData.indexOf(arrData) === -1){
+
                                                           arrData.push(newId);
                                                           allData.push(arrData);
-
                                                           console.log(arrData);
 
-                                                          if (idArr.indexOf(arrData[4]) === -1) {
+                                                        }
+
+                                                          if (idArr.indexOf(arrData[4]) === -1 && idArr.indexOf(arrData) === -1) {
+
                                                             emailData.push(arrData);
                                                             console.log("new seat");
+
                                                           }
                                                         });
                                                     });
@@ -327,7 +332,7 @@ mongoose.connection.once("open", function(err) {
 
       var str = "";
 
-      if (emailData == []) {
+      if (emailData.length === 0) {
         str = "no new seats";
       } else {
         for (var k = 0; k < emailData.length; k++) {
