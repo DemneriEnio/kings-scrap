@@ -139,7 +139,7 @@ mongoose.connection.once("open", function(err) {
 
             driver.get(item);
             driver
-              .wait(until.elementLocated(By.id('Complete_Section_110')))
+              .wait(until.elementLocated(By.id('Complete_Section_110')), 30000)
               .findElement(By.xpath("parent::*"))
               .getAttribute("innerHTML")
               .then(function(data) {
@@ -452,7 +452,7 @@ mongoose.connection.once("open", function(err) {
 
   var job = new CronJob({
 
-    cronTime: "*/60 * * * *",
+    cronTime: "10 * * * *",
 
     onTick: function() {
 
