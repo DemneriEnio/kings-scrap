@@ -473,7 +473,7 @@ mongoose.connection.once("open", function(err) {
 
   var job = new CronJob({
 
-    cronTime: "*/7 * * * *",
+    cronTime: "10 * * * *",
 
     onTick: function() {
 
