@@ -320,6 +320,18 @@ mongoose.connection.once("open", function(err) {
         });
     } else {
 
+      for (var j = 0; j < allData.length; j++){
+
+        if(j === 0) continue;
+
+        if(allData[j][4] === allData[j-1][4]){
+
+          allData.splice(j, 1);
+
+        }
+
+      }
+
       Team.findOneAndUpdate({
         id: "scrap"
       }, {
@@ -339,6 +351,15 @@ mongoose.connection.once("open", function(err) {
         str = "no new seats";
       } else {
         for (var k = 0; k < emailData.length; k++) {
+
+          if(k === 0) continue;
+
+          if(emailData[k][4] === emailData[k-1][4]){
+
+            emailData.splice(k, 1);
+
+          }
+
           str += "<tr><td>" +
             emailData[k][0] + "</td><td>" +
             emailData[k][1] + "</td><td>" +
@@ -452,7 +473,7 @@ mongoose.connection.once("open", function(err) {
 
   var job = new CronJob({
 
-    cronTime: "10 * * * *",
+    cronTime: "*/7 * * * *",
 
     onTick: function() {
 
