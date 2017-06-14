@@ -452,7 +452,7 @@ mongoose.connection.once("open", function(err) {
       content = new helper.Content('text/html', htmlEmail);
 
       //for (var j=0; j<emails.length; j++){
-      var toEmail = new helper.Email('valentino.isufi1@gmail.com');
+      var toEmail = new helper.Email('mordachiamar@gmail.com');
       var mail = new helper.Mail(from_email, subject, toEmail, content);
       //  }
 
