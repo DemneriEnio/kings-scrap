@@ -92,7 +92,7 @@ mongoose.connection.once("open", function(err) {
   });
 
   var helper = require('sendgrid').mail;
-  var from_email = new helper.Email('enio1demneri@gmail.com');
+  var from_email = new helper.Email('mordachiamar@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
   //var emails = ['eniodemneri1@gmail.com'];
@@ -162,7 +162,7 @@ mongoose.connection.once("open", function(err) {
                 function yankees(i) {
 
                   driver
-                    .wait(until.elementLocated(By.id(sections_arr[i].value)), 5000)
+                    .wait(until.elementLocated(By.id(sections_arr[i].value)), 30000)
                     .then(function() {
                       driver
                         .executeScript("$('#" + sections_arr[i].value + "').mouseover()")
@@ -202,7 +202,7 @@ mongoose.connection.once("open", function(err) {
                                   .executeScript("$('#" + freeSections[n] + "').click()")
                                   .then(function() {
                                     driver
-                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')))
+                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')), 30000)
                                       .findElement(By.xpath('div'))
                                       .getAttribute('innerHTML')
                                       .then(function(data) {
@@ -282,7 +282,7 @@ mongoose.connection.once("open", function(err) {
                                         console.log(arrId);
 
                                         driver
-                                          .executeScript("$('#Back_Btn').click()")
+                                          .executeScript("setTimeout(function(){ $('#Back_Btn').click() }, 500)")
                                           .then(function() {
 
                                             n++;
@@ -433,7 +433,7 @@ mongoose.connection.once("open", function(err) {
       content = new helper.Content('text/html', htmlEmail);
 
       //for (var j=0; j<emails.length; j++){
-      var to_email = new helper.Email('eniodemneri1@gmail.com');
+      var to_email = new helper.Email('matthewingber@gmail.com');
       var mail = new helper.Mail(from_email, subject, to_email, content);
       //  }
 
@@ -453,6 +453,25 @@ mongoose.connection.once("open", function(err) {
 
       //for (var j=0; j<emails.length; j++){
       var toEmail = new helper.Email('mordachiamar@gmail.com');
+      var mail = new helper.Mail(from_email, subject, toEmail, content);
+      //  }
+
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
+
+      sg.API(request, function(error, response) {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+      });
+
+      content = new helper.Content('text/html', htmlEmail);
+
+      //for (var j=0; j<emails.length; j++){
+      var toEmail = new helper.Email('eniodemneri1@gmail.com');
       var mail = new helper.Mail(from_email, subject, toEmail, content);
       //  }
 
