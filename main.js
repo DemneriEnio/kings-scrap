@@ -139,7 +139,7 @@ mongoose.connection.once("open", function(err) {
 
             driver.get(item);
             driver
-              .wait(until.elementLocated(By.id('Complete_Section_110')), 30000)
+              .wait(until.elementLocated(By.id('Complete_Section_110')), 20000)
               .findElement(By.xpath("parent::*"))
               .getAttribute("innerHTML")
               .then(function(data) {
@@ -162,7 +162,7 @@ mongoose.connection.once("open", function(err) {
                 function yankees(i) {
 
                   driver
-                    .wait(until.elementLocated(By.id(sections_arr[i].value)), 30000)
+                    .wait(until.elementLocated(By.id(sections_arr[i].value)), 20000)
                     .then(function() {
                       driver
                         .executeScript("$('#" + sections_arr[i].value + "').mouseover()")
@@ -196,13 +196,13 @@ mongoose.connection.once("open", function(err) {
 
                           function rec(n) {
                             driver
-                              .wait(until.elementLocated(By.id("Map")), 60000)
+                              .wait(until.elementLocated(By.id("Map")), 50000)
                               .then(function() {
                                 driver
                                   .executeScript("$('#" + freeSections[n] + "').click()")
                                   .then(function() {
                                     driver
-                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')), 50000)
+                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')), 30000)
                                       .findElement(By.xpath('div'))
                                       .getAttribute('innerHTML')
                                       .then(function(data) {
