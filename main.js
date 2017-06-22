@@ -92,7 +92,7 @@ mongoose.connection.once("open", function(err) {
   });
 
   var helper = require('sendgrid').mail;
-  var from_email = new helper.Email('enio1demneri@gmail.com');
+  var from_email = new helper.Email('mordachiamar@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
   //var emails = ['eniodemneri1@gmail.com'];
