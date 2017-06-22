@@ -32,7 +32,7 @@ app.use(express.static('public'));
 var allData = [];
 var emailData = [];
 
-const driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
+var driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(options).build();
 
 var url = ["https://oss.ticketmaster.com/aps/sackings/EN/buy/details/17KFL"];
 
@@ -92,7 +92,7 @@ mongoose.connection.once("open", function(err) {
   });
 
   var helper = require('sendgrid').mail;
-  var from_email = new helper.Email('mordachiamar@gmail.com');
+  var from_email = new helper.Email('enio1demneri@gmail.com');
   var subject = 'Tickets';
   var content = new helper.Content('text/plain', '');
   //var emails = ['eniodemneri1@gmail.com'];
@@ -490,28 +490,36 @@ mongoose.connection.once("open", function(err) {
 
   }
 
+
+
   var job = new CronJob({
 
-    cronTime: "10 * * * *",
+    cronTime: "*/5 * * * *",
 
     onTick: function() {
+      try{
+        teams(-1);
+      }
+      catch(e){
+        console.log(e);
+      }
+      finally{
+      teams(-1);
+    }
 
-      driver.executeScript("location.reload()")
-        .then(function(){
-
-          try {
+        /*  try {
             teams(-1);
           } catch (e) {
             console.log(e);
+            console.log('ktu ka error')
             teams(-1);
             app.use(bodyParser.json());
             app.use(bodyParser.urlencoded({
               extended: false
             }));
             app.use(express.static('public'));
-          }
+          }*/
 
-        });
     },
 
     runOnInit: true,
