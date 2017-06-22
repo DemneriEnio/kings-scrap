@@ -491,23 +491,13 @@ mongoose.connection.once("open", function(err) {
   }
 
 
-
   var job = new CronJob({
 
-    cronTime: "*/5 * * * *",
+    cronTime: "10 * * * *",
 
     onTick: function() {
-      try{
-        teams(-1);
-      }
-      catch(e){
-        console.log(e);
-      }
-      finally{
-      teams(-1);
-    }
 
-        /*  try {
+          try {
             teams(-1);
           } catch (e) {
             console.log(e);
@@ -518,7 +508,7 @@ mongoose.connection.once("open", function(err) {
               extended: false
             }));
             app.use(express.static('public'));
-          }*/
+          }
 
     },
 
