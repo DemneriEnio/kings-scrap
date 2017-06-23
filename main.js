@@ -202,7 +202,7 @@ mongoose.connection.once("open", function(err) {
                                   .executeScript("$('#" + freeSections[n] + "').click()")
                                   .then(function() {
                                     driver
-                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')), 30000)
+                                      .wait(until.elementLocated(By.id('seatsBasicMapContainer')), 50000)
                                       .findElement(By.xpath('div'))
                                       .getAttribute('innerHTML')
                                       .then(function(data) {
@@ -498,8 +498,11 @@ mongoose.connection.once("open", function(err) {
     onTick: function() {
 
           try {
+            driver.executeScript("location.reload()")
+            teams(-1);
           }
-          finally{
+          catch(e){
+            driver.executeScript("location.reload()")
             teams(-1);
           }
 
