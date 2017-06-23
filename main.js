@@ -498,16 +498,9 @@ mongoose.connection.once("open", function(err) {
     onTick: function() {
 
           try {
+          }
+          finally{
             teams(-1);
-          } catch (e) {
-            console.log(e);
-            console.log('ktu ka error')
-            teams(-1);
-            app.use(bodyParser.json());
-            app.use(bodyParser.urlencoded({
-              extended: false
-            }));
-            app.use(express.static('public'));
           }
 
     },
