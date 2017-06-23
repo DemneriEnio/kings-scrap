@@ -132,7 +132,7 @@ mongoose.connection.once("open", function(err) {
         }
       });
 
-      x(url[count], "iframe@src")
+      x("https://oss.ticketmaster.com/aps/bucs/EN/buy/details/17full", "iframe@src")
         (function(err, item) {
           if (err) console.log(err);
           else {
