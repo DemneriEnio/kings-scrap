@@ -100,7 +100,13 @@ mongoose.connection.once("open", function(err) {
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
-  //funksioni qe nis scraperin
+  function handler(err) {
+      console.log(err);
+      driver.executeScript("location.reload()")
+      teams(-1);
+  }
+
+  //funksioni qe nis scraperi
   function teams(count) {
 
     count++;
@@ -185,13 +191,10 @@ mongoose.connection.once("open", function(err) {
                                           console.log(sections_arr[i - 1].value);
                                           console.log(result);
                                         }
-                                      });
-                                  },
-                                  function(err) {
-                                    console.log('error');
-                                  });
-                            });
-                        });
+                                    }, handler);
+                                  }, handler);
+                            }, handler);
+                        }, handler);
 
                       if (i < sections_arr.length) {
                         i += 2;
@@ -278,9 +281,9 @@ mongoose.connection.once("open", function(err) {
                                                           }
 
                                                           oldId = newId;
-                                                        });
-                                                    });
-                                                });
+                                                        }, handler);
+                                                    }, handler);
+                                                }, handler);
                                             }
                                           }
                                         }
@@ -301,10 +304,10 @@ mongoose.connection.once("open", function(err) {
                                                 teams(count)
                                               }, 2000);
                                             }
-                                          });
-                                      });
-                                  });
-                              });
+                                          }, handler);
+                                      }, handler);
+                                  }, handler);
+                              }, handler);
                           }
                           rec(0);
 
@@ -314,12 +317,12 @@ mongoose.connection.once("open", function(err) {
                           }, 250);
                         }
                       }
-                    });
+                    }, handler);
                 }
 
                 yankees(0);
 
-              });
+              }, handler);
 
           }
         });
@@ -437,7 +440,7 @@ mongoose.connection.once("open", function(err) {
 </html>`;
 
       //personat te cilit i shkon emaili
-      content = new helper.Content('text/html', htmlEmail);
+    /*  content = new helper.Content('text/html', htmlEmail);
 
       //for (var j=0; j<emails.length; j++){
       var to_email = new helper.Email('matthewingber@gmail.com');
@@ -473,7 +476,7 @@ mongoose.connection.once("open", function(err) {
         console.log(response.statusCode);
         console.log(response.body);
         console.log(response.headers);
-      });
+      });*/
 
       content = new helper.Content('text/html', htmlEmail);
 
@@ -500,7 +503,7 @@ mongoose.connection.once("open", function(err) {
 //cron
   var job = new CronJob({
 
-    cronTime: "10 * * * *",
+    cronTime: "*/5 * * * *",
 
     onTick: function() {
           //try and catch
