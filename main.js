@@ -91,6 +91,7 @@ mongoose.connection.once("open", function(err) {
 
   });
 
+  //API qe co emailin
   var helper = require('sendgrid').mail;
   var from_email = new helper.Email('mordachiamar@gmail.com');
   var subject = 'Tickets';
@@ -99,6 +100,7 @@ mongoose.connection.once("open", function(err) {
   sg = require('sendgrid')(String(dbCode));
   //console.log(dbCode);
 
+  //funksioni qe nis scraperin
   function teams(count) {
 
     count++;
@@ -159,6 +161,7 @@ mongoose.connection.once("open", function(err) {
 
                 //sections_arr.reverse();
 
+                //funksioni qe merr sections
                 function yankees(i) {
 
                   driver
@@ -194,6 +197,7 @@ mongoose.connection.once("open", function(err) {
                         i += 2;
                         if (i >= sections_arr.length) {
 
+                          //funksioni qe shtyp cdo sections qe merret me siper
                           function rec(n) {
                             driver
                               .wait(until.elementLocated(By.id("Map")), 50000)
@@ -265,6 +269,7 @@ mongoose.connection.once("open", function(err) {
 
                                                           }
 
+                                                          //kusht nqs ka new seats
                                                           if (idArr.indexOf(arrData[4]) === -1 && idArr.indexOf(arrData) === -1) {
 
                                                             emailData.push(arrData);
@@ -345,6 +350,7 @@ mongoose.connection.once("open", function(err) {
 
       });
 
+      //dergimi i emailit
       var str = "";
 
       if (emailData.length === 0) {
@@ -430,6 +436,7 @@ mongoose.connection.once("open", function(err) {
 	</body>
 </html>`;
 
+      //personat te cilit i shkon emaili
       content = new helper.Content('text/html', htmlEmail);
 
       //for (var j=0; j<emails.length; j++){
@@ -490,13 +497,13 @@ mongoose.connection.once("open", function(err) {
 
   }
 
-
+//cron
   var job = new CronJob({
 
     cronTime: "10 * * * *",
 
     onTick: function() {
-
+          //try and catch
           try {
             driver.executeScript("location.reload()")
             teams(-1);
